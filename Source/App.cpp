@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class App : public juce::JUCEApplication {
+class AudioApp : public juce::JUCEApplication {
 public:
     const juce::String getApplicationName() override {
         return ProjectInfo::projectName;

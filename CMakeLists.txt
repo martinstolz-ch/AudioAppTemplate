@@ -4,9 +4,9 @@ set (CMAKE_CXX_STANDARD 20)
 
 
 #########################################################################
-project (AUDIO_APP_TEMPLATE VERSION 0.0.1)
-set     (TargetName   AudioAppTemplate)
-set     (ProductName "Audio App Template")
+project (AUDIO_APP VERSION 0.0.1)
+set     (TargetName   AudioApp)
+set     (ProductName "Audio App")
 #########################################################################
 
 
