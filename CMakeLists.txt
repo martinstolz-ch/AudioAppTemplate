@@ -4,15 +4,15 @@ set (CMAKE_CXX_STANDARD 20)
 
 
 #########################################################################
-project (APP_TEMPLATE VERSION 0.0.1)
-set     (TargetName   AppTemplate)
-set     (ProductName "App Template")
+project (AUDIO_APP_TEMPLATE VERSION 0.0.1)
+set     (TargetName   AudioAppTemplate)
+set     (ProductName "Audio App Template")
 #########################################################################
 
 
 # fetching JUCE from git
 include(cmake/CPM.cmake)
-CPMAddPackage("gh:juce-framework/JUCE@7.0.2#develop")
+CPMAddPackage("gh:juce-framework/JUCE@7.0.4#develop")
 
 # Compile commands, useful for some IDEs like VS-Code
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
