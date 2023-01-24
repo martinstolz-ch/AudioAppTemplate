@@ -10,15 +10,11 @@ using namespace std;
 
 class AudioApp : public juce::JUCEApplication {
 public:
-    const juce::String getApplicationName() override {
-        return ProjectInfo::projectName;
-    }
-    const juce::String getApplicationVersion() override {
-        return ProjectInfo::versionString;
-    }
-    bool moreThanOneInstanceAllowed() override {
-        return true;
-    }
+    AudioApp()= default;
+
+    const juce::String getApplicationName() override { return ProjectInfo::projectName; }
+    const juce::String getApplicationVersion() override { return ProjectInfo::versionString; }
+    bool moreThanOneInstanceAllowed() override { return true; }
 
     void initialise(const juce::String& /*commandLine*/) override {
         mainWindow = make_unique<MainWindow>(getApplicationName() + " / " + getApplicationVersion());
@@ -36,7 +32,8 @@ public:
 
 private:
     unique_ptr<MainWindow> mainWindow;
+
 };
 
 // This macro generates the main() routine that launches the app.
-START_JUCE_APPLICATION(App)
+START_JUCE_APPLICATION( AudioApp )

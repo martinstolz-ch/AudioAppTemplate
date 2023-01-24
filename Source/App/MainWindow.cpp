@@ -14,7 +14,9 @@ constexpr bool isMobile() {
     #endif
 }
 
-MainWindow::MainWindow(const String& name): DocumentWindow(name, getBackgroundColour(), allButtons) {
+MainWindow::MainWindow(const String& name):
+        DocumentWindow(name, getBackgroundColour(), allButtons) {
+
     setUsingNativeTitleBar(true);
     setContentOwned(new MainComponent(), true);
 
