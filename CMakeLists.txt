@@ -12,7 +12,7 @@ set     (ProductName "Audio App")
 
 # fetching JUCE from git
 include(cmake/CPM.cmake)
-CPMAddPackage("gh:juce-framework/JUCE@7.0.4#develop")
+CPMAddPackage("gh:juce-framework/JUCE@7.0.5#develop")
 
 # Compile commands, useful for some IDEs like VS-Code
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
