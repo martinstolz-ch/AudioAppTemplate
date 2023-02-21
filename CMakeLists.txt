@@ -10,10 +10,9 @@ set     (ProductName "Audio App")
 #########################################################################
 
 
-# fetching JUCE from git with CPM
-# see CPM releases: https://github.com/cpm-cmake/CPM.cmake/releases
+# fetching JUCE from git with CPM: https://github.com/cpm-cmake/CPM.cmake/releases
 include(cmake/CPM.cmake)
-set (CPM_SOURCE_CACHE ~/.cache/CPM)
+set (CPM_SOURCE_CACHE ~/_Engineering/_cache/CPM)
 CPMAddPackage("gh:juce-framework/JUCE@7.0.5#develop")
 
 # Compile commands, useful for some IDEs like VS-Code
