@@ -9,6 +9,7 @@ set     (TargetName   AudioApp)
 set     (ProductName "Audio App")
 #########################################################################
 
+
 # CPM releases: https://github.com/cpm-cmake/CPM.cmake/releases
 
 # fetching JUCE from git
