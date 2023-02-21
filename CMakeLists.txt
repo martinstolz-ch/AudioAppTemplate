@@ -11,8 +11,8 @@ set     (ProductName "Audio App")
 
 
 # fetching JUCE from git with CPM: https://github.com/cpm-cmake/CPM.cmake/releases
-include(cmake/CPM.cmake)
-set (CPM_SOURCE_CACHE ~/_Engineering/_cache/CPM)
+include("cmake/CPM.cmake")
+set(CPM_SOURCE_CACHE ~/.cache/CPM)
 CPMAddPackage("gh:juce-framework/JUCE@7.0.5#develop")
 
 # Compile commands, useful for some IDEs like VS-Code
@@ -41,7 +41,7 @@ juce_add_gui_app(${TargetName}
     # ICON_SMALL ...
     PRODUCT_NAME "${ProductName}"
     COMPANY_NAME "noizplay"
-    COMPANY_WEBSITE "www.noizplay.com"
+    COMPANY_WEBSITE "noizplay.com"
 )
 
 juce_generate_juce_header("${TargetName}")
