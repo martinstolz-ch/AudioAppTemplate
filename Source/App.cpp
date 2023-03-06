@@ -4,9 +4,9 @@
  * (c) 2022 by noizplay.com
  */
 
-#include "App/MainWindow.h"
+#include <JuceHeader.h>
 
-using namespace std;
+#include "App/MainWindow.h"
 
 class AudioApp : public juce::JUCEApplication {
 public:
@@ -17,7 +17,8 @@ public:
     bool moreThanOneInstanceAllowed() override { return true; }
 
     void initialise(const juce::String& /*commandLine*/) override {
-        mainWindow = make_unique<MainWindow>(getApplicationName() + " / " + getApplicationVersion());
+        mainWindow = std::make_unique<MainWindow>(getApplicationName() + " / " + getApplicationVersion());
+        mainWindow->setVisible(true);
     }
 
     void shutdown() override {
@@ -31,9 +32,8 @@ public:
     void anotherInstanceStarted(const juce::String& /*commandLine*/) override {}
 
 private:
-    unique_ptr<MainWindow> mainWindow;
+    std::unique_ptr<MainWindow> mainWindow;
 
 };
 
-// This macro generates the main() routine that launches the app.
 START_JUCE_APPLICATION( AudioApp )
