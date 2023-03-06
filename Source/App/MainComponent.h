@@ -6,24 +6,70 @@
 
 #pragma once
 
+#include <JuceHeader.h>
+
 #include "../Common/CMakeVars.h"
 #include "../Common/Config.h"
 
-#include <JuceHeader.h>
 
 class MainComponent : public juce::AudioAppComponent {
-
 public:
+    MainComponent() {
 
-    MainComponent();
-    ~MainComponent() override;
+        setSize(400, 200);
 
-    void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
-    void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
-    void releaseResources() override;
+        ///
 
-    void paint(juce::Graphics&) override;
-    void resized() override;
+        // Some platforms require permissions to open input channels so request that here
+        if ( juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
+             &&
+             ! juce::RuntimePermissions::isGranted (juce::RuntimePermissions::recordAudio)) {
+
+            juce::RuntimePermissions::request (juce::RuntimePermissions::recordAudio,
+                                               [&] (bool granted) {
+                                                   setAudioChannels (granted ? 2 : 0, 2);
+                                               }
+
+            );
+        } else {
+
+            // Specify the number of input and output channels that we want to open
+            setAudioChannels (2, 2);
+        }
+    }
+
+    ~MainComponent() override {
+        shutdownAudio();
+    }
+
+    void paint(juce::Graphics& g) override {
+        g.setColour(app_config::MAIN_COLOUR);
+        g.setFont(
+                {app_config::DEFAULT_TEXT_SIZE,
+                 juce::Font::FontStyleFlags::plain }
+        );
+        g.drawFittedText(
+                cmake_vars::COMPANY_WEBSITE,
+                getLocalBounds(),
+                juce::Justification::centredBottom,
+                1);
+    }
+
+    void resized() override {}
+
+    ///
+
+    void prepareToPlay (int /* samplesPerBlockExpected */, double /* sampleRate */) override {
+        // ...
+    }
+
+    void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override {
+        bufferToFill.clearActiveBufferRegion();
+    }
+
+    void releaseResources() override {
+        // ...
+    }
 
 private:
 

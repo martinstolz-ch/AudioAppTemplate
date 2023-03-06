@@ -6,19 +6,41 @@
 
 #pragma once
 
+#include <JuceHeader.h>
+
 #include "MainComponent.h"
 
-using namespace std;
+constexpr bool isMobile() {
+    #if JUCE_IOS || JUCE_ANDROID
+        return true;
+    #else
+        return false;
+    #endif
+}
 
 class MainWindow : public juce::DocumentWindow {
-
 public:
-    MainWindow(const juce::String& name);
+    explicit MainWindow(const String& name): DocumentWindow(name, getBackgroundColour(), allButtons) {
+
+        setUsingNativeTitleBar(true);
+        setContentOwned(new MainComponent(), true);
+
+        if (isMobile()) {
+            setFullScreen(true);
+        }
+        else {
+            setResizable(true, true);
+            centreWithSize(getWidth(), getHeight());
+        }
+    }
 
 private:
-    void closeButtonPressed() override;
-    juce::Colour getBackgroundColour();
+    void closeButtonPressed() override {
+        juce::JUCEApplication::getInstance()->systemRequestedQuit();
+    }
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR( MainWindow )
+    static juce::Colour getBackgroundColour() {
+        return juce::Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId);
+    }
 };
 

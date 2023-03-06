@@ -46,13 +46,9 @@ juce_add_gui_app(${TargetName}
 
 juce_generate_juce_header("${TargetName}")
 
-add_subdirectory(JuceModules)
-
 target_sources("${TargetName}"
     PRIVATE
         Source/App.cpp
-        Source/App/MainComponent.cpp
-        Source/App/MainWindow.cpp
 )
 
 target_compile_definitions("${TargetName}"
@@ -66,21 +62,11 @@ target_compile_definitions("${TargetName}"
 
 target_link_libraries("${TargetName}"
     PRIVATE
-        processing_code
-
-        juce::juce_gui_extra
         juce::juce_audio_basics
-        juce::juce_audio_devices
-        juce::juce_audio_formats
-        juce::juce_audio_processors
         juce::juce_audio_utils
-        juce::juce_core
-        juce::juce_data_structures
-        juce::juce_events
         juce::juce_graphics
         juce::juce_gui_basics
-        juce::juce_audio_plugin_client
-               
+
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
@@ -90,4 +76,4 @@ target_link_libraries("${TargetName}"
 get_target_property(JUCE_COMPANY_WEBSITE ${TargetName} JUCE_COMPANY_WEBSITE)
 
 # export some vars to CMakeVars.h in /Source folder
-configure_file(CMakeVars.h.txt "${CMAKE_CURRENT_SOURCE_DIR}/Source/Common/CMakeVars.h" )
+configure_file(CMakeVars.h.in "${CMAKE_CURRENT_SOURCE_DIR}/Source/Common/CMakeVars.h" )
