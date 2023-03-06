@@ -8,7 +8,7 @@
 
 #include <JuceHeader.h>
 
-namespace Config {
+namespace app_config {
 
     // text
     const auto DEFAULT_TEXT_SIZE{14.f};

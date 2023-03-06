@@ -8,7 +8,7 @@
 
 #include <JuceHeader.h>
 
-namespace CMakeVars {
+namespace cmake_vars {
 
     #define DECLARE_VAR(name, val) const std::string name{val};
 
