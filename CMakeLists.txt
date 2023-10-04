@@ -16,7 +16,7 @@ set(CPM_USE_NAMED_CACHE_DIRECTORIES true)
 set(CPM_SOURCE_CACHE ~/.cache/CPM)
 
 # get JUCE
-CPMAddPackage("gh:juce-framework/JUCE@7.0.6#master")
+CPMAddPackage("gh:juce-framework/JUCE@7.0.7#master")
 
 # Compile commands, useful for some IDEs like VS-Code
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
@@ -29,6 +29,7 @@ option(UniversalBinary "Build universal binary for mac" ON)
 
 if (UniversalBinary)
     set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE INTERNAL "")
+    set(MACOSX_BUNDLE TRUE)
 endif()
 
 # static linking in Windows
