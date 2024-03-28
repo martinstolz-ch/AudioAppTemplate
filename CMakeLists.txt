@@ -16,7 +16,7 @@ set(CPM_USE_NAMED_CACHE_DIRECTORIES true)
 set(CPM_SOURCE_CACHE ~/.cache/CPM)
 
 # get JUCE
-CPMAddPackage("gh:juce-framework/JUCE@7.0.10#master")
+CPMAddPackage("gh:juce-framework/JUCE@7.0.11#master")
 
 # Compile commands, useful for some IDEs like VS-Code
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
@@ -57,7 +57,7 @@ target_sources("${TargetName}"
 
 target_compile_definitions("${TargetName}"
     PRIVATE
-        JUCE_DISPLAY_SPLASH_SCREEN=1
+        JUCE_DISPLAY_SPLASH_SCREEN=0
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
         JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${TargetName},JUCE_PROJECT_NAME>"
