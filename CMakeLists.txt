@@ -1,83 +1,99 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.28)
 
 set (CMAKE_CXX_STANDARD 20)
 
-
-#########################################################################
+###############################################################################
+# martin stolz - (c) noizplay.com
+###############################################################################
 project (AUDIO_APP VERSION 0.0.1)
-set     (TargetName   AudioApp)
-set     (ProductName "Audio App")
-#########################################################################
+set     (TargetName    ${PROJECT_NAME})
+set     (ProductName  "Audio App")
 
+set (companyName "noizplay")
+set (companyURL "noizplay.com")
+###############################################################################
 
-# use CPM
-include(cmake/CPM.cmake)
-set(CPM_USE_NAMED_CACHE_DIRECTORIES true)
-set(CPM_SOURCE_CACHE ~/.cache/CPM)
+# initialise
+set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set_property (GLOBAL PROPERTY USE_FOLDERS YES)
+option (JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
 
-# get JUCE
-CPMAddPackage("gh:juce-framework/JUCE@7.0.11#master")
+# we are Mac ?
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set (CMAKE_OSX_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimum OS X deployment version" FORCE)
+    set (CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE INTERNAL "")
+    set (MACOSX_BUNDLE TRUE) # create .app bundle for mac
+    message (STATUS "Build for Mac")
 
-# Compile commands, useful for some IDEs like VS-Code
-set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+    # ...or Win ?
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    set (CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>") # static linking in Windows
+    message (STATUS "Build for Windows")
 
-# Minimum MacOS target, set globally
-set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimum OS X deployment version" FORCE)
+    # ...nope :/
+else ()
+    message (FATAL_ERROR "No viable platform found")
+endif ()
 
-# Universal Binary ?
-option(UniversalBinary "Build universal binary for mac" ON)
+# manually added submodules in console
 
-if (UniversalBinary)
-    set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE INTERNAL "")
-    set(MACOSX_BUNDLE TRUE)
-endif()
+# JUCE 7
+# git submodule add https://github.com/juce-framework/JUCE.git gitmodule/JUCE
 
-# static linking in Windows
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+# JUCE 8
+# git submodule add -b juce8 https://github.com/juce-framework/JUCE.git gitmodule/JUCE
+
+# update submodules
+execute_process (
+    COMMAND git submodule update --init --recursive
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
+# add JUCE to project
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gitmodule/JUCE)
 
 # Adds all the module sources so they appear correctly in the IDE
 set_property(GLOBAL PROPERTY USE_FOLDERS YES)
 option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
 
-juce_add_gui_app(${TargetName}
-    # VERSION ...                        # Set this if the app version is different to the project version
-    # ICON_BIG ...
-    # ICON_SMALL ...
-    PRODUCT_NAME "${ProductName}"
-    COMPANY_NAME "noizplay"
-    COMPANY_WEBSITE "noizplay.com"
+# define JUCE app
+juce_add_gui_app (${TargetName}
+    # ICON_BIG        "..."
+    # ICON_SMALL      "..."
+    PRODUCT_NAME    "${ProductName}"
+    COMPANY_NAME    "${companyName}"
+    COMPANY_WEBSITE "${companyURL}"
 )
 
 juce_generate_juce_header("${TargetName}")
 
 target_sources("${TargetName}"
-    PRIVATE
-        Source/App.cpp
-)
-
-target_compile_definitions("${TargetName}"
-    PRIVATE
-        JUCE_DISPLAY_SPLASH_SCREEN=0
-        JUCE_WEB_BROWSER=0
-        JUCE_USE_CURL=0
-        JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${TargetName},JUCE_PROJECT_NAME>"
-        JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${TargetName},JUCE_VERSION>"
+    PUBLIC
+    Source/app/App.cpp
 )
 
 target_link_libraries("${TargetName}"
     PRIVATE
-        juce::juce_audio_basics
-        juce::juce_audio_utils
-        juce::juce_graphics
-        juce::juce_gui_basics
+    juce::juce_audio_basics
+    juce::juce_audio_utils
+    juce::juce_graphics
+    juce::juce_gui_basics
 
-        juce::juce_recommended_config_flags
-        juce::juce_recommended_lto_flags
-        juce::juce_recommended_warning_flags
+    juce::juce_recommended_config_flags
+    juce::juce_recommended_lto_flags
+    juce::juce_recommended_warning_flags
 )
 
-# get some JUCE properties
-get_target_property(JUCE_COMPANY_WEBSITE ${TargetName} JUCE_COMPANY_WEBSITE)
+target_compile_definitions ("${TargetName}"
+    PRIVATE
+    # JUCE_DISPLAY_SPLASH_SCREEN=0 # actually not supported in JUCE 8
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${TargetName},JUCE_PROJECT_NAME>"
+    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${TargetName},JUCE_VERSION>"
+)
 
-# export some vars to CMakeVars.h in /Source folder
-configure_file(CMakeVars.h.in "${CMAKE_CURRENT_SOURCE_DIR}/Source/Common/CMakeVars.h" )
+# create cmakeVars.h
+get_target_property (COMPANY_WEBSITE ${TargetName} JUCE_COMPANY_WEBSITE)
+string (TIMESTAMP buildYear "%Y")
+configure_file (template/cmakeVar.h.tpl "${CMAKE_CURRENT_SOURCE_DIR}/Source/Common/cmakeVar.h" )
