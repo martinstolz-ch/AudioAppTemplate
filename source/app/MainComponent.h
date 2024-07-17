@@ -8,8 +8,8 @@
 
 #include <JuceHeader.h>
 
-#include "../Common/CMakeVars.h"
-#include "../Common/Config.h"
+#include "../etc/cmakeVar.h"
+#include "../etc/appConfig.h"
 
 
 class MainComponent : public juce::AudioAppComponent {
@@ -44,12 +44,9 @@ public:
 
     void paint(juce::Graphics& g) override {
         g.setColour(app_config::MAIN_COLOUR);
-        g.setFont(
-                {app_config::DEFAULT_TEXT_SIZE,
-                 juce::Font::FontStyleFlags::plain }
-        );
+        g.setFont (FontOptions().withStyle ("light"));
         g.drawFittedText(
-                cmake_vars::COMPANY_WEBSITE,
+                cmakeVar::companyURL,
                 getLocalBounds(),
                 juce::Justification::centredBottom,
                 1);
