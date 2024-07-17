@@ -6,7 +6,7 @@
 
 #include <JuceHeader.h>
 
-#include "App/MainWindow.h"
+#include "MainWindow.h"
 
 class AudioApp : public juce::JUCEApplication {
 public:
