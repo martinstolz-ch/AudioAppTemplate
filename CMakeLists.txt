@@ -35,22 +35,16 @@ else ()
     message (FATAL_ERROR "No viable platform found")
 endif ()
 
-# manually added submodules in console
+# fetch external repos
+include(FetchContent)
 
-# JUCE 7
-# git submodule add https://github.com/juce-framework/JUCE.git gitmodule/JUCE
-
-# JUCE 8
-# git submodule add -b juce8 https://github.com/juce-framework/JUCE.git gitmodule/JUCE
-
-# update submodules
-execute_process (
-    COMMAND git submodule update --init --recursive
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+message (STATUS "Fetch JUCE")
+FetchContent_Declare(
+    JUCE
+    GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+    GIT_TAG 8.0.1
 )
-
-# add JUCE to project
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/gitmodule/JUCE)
+FetchContent_MakeAvailable(JUCE)
 
 # Adds all the module sources so they appear correctly in the IDE
 set_property(GLOBAL PROPERTY USE_FOLDERS YES)
