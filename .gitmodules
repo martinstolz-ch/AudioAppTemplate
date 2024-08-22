@@ -1,4 +1,0 @@
-[submodule "gitmodule/JUCE"]
-	path = gitmodule/JUCE
-	url = https://github.com/juce-framework/JUCE.git
-	branch = juce8
