@@ -42,7 +42,7 @@ message (STATUS "Fetch JUCE")
 FetchContent_Declare(
     JUCE
     GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-    GIT_TAG 8.0.1
+    GIT_TAG 8.0.2
 )
 FetchContent_MakeAvailable(JUCE)
 
@@ -80,7 +80,6 @@ target_link_libraries("${TargetName}"
 
 target_compile_definitions ("${TargetName}"
     PRIVATE
-    # JUCE_DISPLAY_SPLASH_SCREEN=0 # actually not supported in JUCE 8
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
     JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${TargetName},JUCE_PROJECT_NAME>"
