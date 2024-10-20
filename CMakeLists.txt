@@ -89,4 +89,4 @@ target_compile_definitions ("${TargetName}"
 # create cmakeVars.h
 get_target_property (COMPANY_WEBSITE ${TargetName} JUCE_COMPANY_WEBSITE)
 string (TIMESTAMP buildYear "%Y")
-configure_file (template/cmakeVar.h.tpl "${CMAKE_CURRENT_SOURCE_DIR}/Source/Common/cmakeVar.h" )
+configure_file (template/cmakeVar.h.tpl "${CMAKE_CURRENT_SOURCE_DIR}/Source/etc/cmakeVar.h" )
