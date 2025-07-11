@@ -8,15 +8,19 @@
 
 #include "MainWindow.h"
 
-class AudioApp : public juce::JUCEApplication {
+namespace aa {
+
+class AudioApp final
+    : public JUCEApplication {
+
 public:
     AudioApp()= default;
 
-    const juce::String getApplicationName() override { return ProjectInfo::projectName; }
-    const juce::String getApplicationVersion() override { return ProjectInfo::versionString; }
+    const String getApplicationName() override { return ProjectInfo::projectName; }
+    const String getApplicationVersion() override { return ProjectInfo::versionString; }
     bool moreThanOneInstanceAllowed() override { return true; }
 
-    void initialise(const juce::String& /*commandLine*/) override {
+    void initialise(const String& /*commandLine*/) override {
         mainWindow = std::make_unique<MainWindow>(getApplicationName() + " / " + getApplicationVersion());
         mainWindow->setVisible(true);
     }
@@ -29,11 +33,13 @@ public:
         quit();
     }
 
-    void anotherInstanceStarted(const juce::String& /*commandLine*/) override {}
+    void anotherInstanceStarted(const String& /*commandLine*/) override {}
 
 private:
     std::unique_ptr<MainWindow> mainWindow;
 
 };
 
-START_JUCE_APPLICATION( AudioApp )
+}
+
+START_JUCE_APPLICATION( aa::AudioApp )

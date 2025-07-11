@@ -1,10 +1,18 @@
-cmake_minimum_required(VERSION 3.28)
-
-set (CMAKE_CXX_STANDARD 20)
-
 ###############################################################################
 # martin stolz - (c) noizplay.com
 ###############################################################################
+cmake_minimum_required (VERSION 3.31.3)
+
+set (CMAKE_CXX_STANDARD 20)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
+
+find_program(VCPKG_EXECUTABLE vcpkg)
+if(VCPKG_EXECUTABLE AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    get_filename_component(VCPKG_ROOT ${VCPKG_EXECUTABLE} DIRECTORY)
+    set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE FILEPATH "")
+endif()
+
 project (AUDIO_APP VERSION 0.0.1)
 set     (TargetName    ${PROJECT_NAME})
 set     (ProductName  "Audio App")
@@ -42,13 +50,13 @@ message (STATUS "Fetch JUCE")
 FetchContent_Declare(
     JUCE
     GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-    GIT_TAG 8.0.6
+    GIT_TAG 8.0.8
 )
 FetchContent_MakeAvailable(JUCE)
 
-# Adds all the module sources so they appear correctly in the IDE
-set_property(GLOBAL PROPERTY USE_FOLDERS YES)
-option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
+# find Boost
+# find_package (Boost REQUIRED CONFIG)
+# message (STATUS "Boost version: ${Boost_VERSION}")
 
 # define JUCE app
 juce_add_gui_app (${TargetName}
@@ -68,6 +76,9 @@ target_sources("${TargetName}"
 
 target_link_libraries("${TargetName}"
     PRIVATE
+
+    # Boost::boost
+
     juce::juce_audio_basics
     juce::juce_audio_utils
     juce::juce_graphics
@@ -89,4 +100,4 @@ target_compile_definitions ("${TargetName}"
 # create cmakeVars.h
 get_target_property (COMPANY_WEBSITE ${TargetName} JUCE_COMPANY_WEBSITE)
 string (TIMESTAMP buildYear "%Y")
-configure_file (template/cmakeVar.h.tpl "${CMAKE_CURRENT_SOURCE_DIR}/Source/etc/cmakeVar.h" )
+configure_file (template/cmakeVar.h.tpl "source/common/cmakeVar.h" )

@@ -8,11 +8,14 @@
 
 #include <JuceHeader.h>
 
-#include "../etc/cmakeVar.h"
-#include "../etc/appConfig.h"
+#include "../common/cmakeVar.h"
+#include "../common/appConfig.h"
 
+namespace aa {
 
-class MainComponent : public juce::AudioAppComponent {
+class MainComponent final
+    : public AudioAppComponent {
+
 public:
     MainComponent() {
 
@@ -21,34 +24,34 @@ public:
         ///
 
         // Some platforms require permissions to open input channels so request that here
-        if ( juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
+        if ( RuntimePermissions::isRequired (RuntimePermissions::recordAudio)
              &&
-             ! juce::RuntimePermissions::isGranted (juce::RuntimePermissions::recordAudio)) {
+             ! RuntimePermissions::isGranted (RuntimePermissions::recordAudio)) {
 
-            juce::RuntimePermissions::request (juce::RuntimePermissions::recordAudio,
+            RuntimePermissions::request (RuntimePermissions::recordAudio,
                                                [&] (bool granted) {
                                                    setAudioChannels (granted ? 2 : 0, 2);
                                                }
 
             );
-        } else {
+             } else {
 
-            // Specify the number of input and output channels that we want to open
-            setAudioChannels (2, 2);
-        }
+                 // Specify the number of input and output channels that we want to open
+                 setAudioChannels (2, 2);
+             }
     }
 
     ~MainComponent() override {
         shutdownAudio();
     }
 
-    void paint(juce::Graphics& g) override {
+    void paint(Graphics& g) override {
         g.setColour(app_config::MAIN_COLOUR);
         g.setFont (FontOptions().withStyle ("light"));
         g.drawFittedText(
                 cmakeVar::companyURL,
                 getLocalBounds(),
-                juce::Justification::centredBottom,
+                Justification::centredBottom,
                 1);
     }
 
@@ -72,3 +75,5 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR( MainComponent )
 };
+
+}

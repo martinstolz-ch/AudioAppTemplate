@@ -6,7 +6,7 @@
 
 #include <JuceHeader.h>
 
-namespace cmakeVar {
+namespace aa::makeVar {
 
     static const String
         buildYear {"@buildYear@"},

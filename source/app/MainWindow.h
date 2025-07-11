@@ -10,15 +10,19 @@
 
 #include "MainComponent.h"
 
+namespace aa {
+
 constexpr bool isMobile() {
-    #if JUCE_IOS || JUCE_ANDROID
-        return true;
-    #else
-        return false;
-    #endif
+#if JUCE_IOS || JUCE_ANDROID
+    return true;
+#else
+    return false;
+#endif
 }
 
-class MainWindow : public juce::DocumentWindow {
+class MainWindow final
+    : public DocumentWindow {
+
 public:
     explicit MainWindow(const String& name): DocumentWindow(name, getBackgroundColour(), allButtons) {
 
@@ -36,11 +40,12 @@ public:
 
 private:
     void closeButtonPressed() override {
-        juce::JUCEApplication::getInstance()->systemRequestedQuit();
+        JUCEApplication::getInstance()->systemRequestedQuit();
     }
 
-    static juce::Colour getBackgroundColour() {
-        return juce::Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId);
+    static Colour getBackgroundColour() {
+        return Desktop::getInstance().getDefaultLookAndFeel().findColour(ResizableWindow::backgroundColourId);
     }
 };
 
+}
