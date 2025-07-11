@@ -14,8 +14,8 @@ if(VCPKG_EXECUTABLE AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
 endif()
 
 project (AUDIO_APP VERSION 0.0.1)
-set     (TargetName    ${PROJECT_NAME})
-set     (ProductName  "Audio App")
+set     (Target      ${PROJECT_NAME})
+set     (ProductName "Audio App")
 
 set (companyName "noizplay")
 set (companyURL "noizplay.com")
@@ -59,7 +59,7 @@ FetchContent_MakeAvailable(JUCE)
 # message (STATUS "Boost version: ${Boost_VERSION}")
 
 # define JUCE app
-juce_add_gui_app (${TargetName}
+juce_add_gui_app (${Target}
     # ICON_BIG        "..."
     # ICON_SMALL      "..."
     PRODUCT_NAME    "${ProductName}"
@@ -67,14 +67,14 @@ juce_add_gui_app (${TargetName}
     COMPANY_WEBSITE "${companyURL}"
 )
 
-juce_generate_juce_header("${TargetName}")
+juce_generate_juce_header("${Target}")
 
-target_sources("${TargetName}"
+target_sources("${Target}"
     PUBLIC
     Source/app/App.cpp
 )
 
-target_link_libraries("${TargetName}"
+target_link_libraries("${Target}"
     PRIVATE
 
     # Boost::boost
@@ -89,15 +89,15 @@ target_link_libraries("${TargetName}"
     juce::juce_recommended_warning_flags
 )
 
-target_compile_definitions ("${TargetName}"
+target_compile_definitions ("${Target}"
     PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
-    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${TargetName},JUCE_PROJECT_NAME>"
-    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${TargetName},JUCE_VERSION>"
+    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${Target},JUCE_PROJECT_NAME>"
+    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${Target},JUCE_VERSION>"
 )
 
 # create cmakeVars.h
-get_target_property (COMPANY_WEBSITE ${TargetName} JUCE_COMPANY_WEBSITE)
+get_target_property (COMPANY_WEBSITE ${Target} JUCE_COMPANY_WEBSITE)
 string (TIMESTAMP buildYear "%Y")
 configure_file (template/cmakeVar.h.tpl "source/common/cmakeVar.h" )
