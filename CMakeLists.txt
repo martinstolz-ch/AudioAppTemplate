@@ -1,28 +1,38 @@
-###############################################################################
-# martin stolz - (c) noizplay.com
-###############################################################################
+#################################################
+# (c) martin stolz @ noizplay
+#################################################
+
+# preconditions
 cmake_minimum_required (VERSION 3.31.3)
 
 set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
 
-find_program(VCPKG_EXECUTABLE vcpkg)
-if(VCPKG_EXECUTABLE AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-    get_filename_component(VCPKG_ROOT ${VCPKG_EXECUTABLE} DIRECTORY)
-    set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE FILEPATH "")
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    find_program(VCPKG_EXECUTABLE vcpkg)
+    if(VCPKG_EXECUTABLE)
+        get_filename_component(VCPKG_ROOT ${VCPKG_EXECUTABLE} DIRECTORY)
+        set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE FILEPATH "")
+    endif()
 endif()
 
+
+# project config ################################
 project (AUDIO_APP VERSION 0.0.1)
 set     (Target      ${PROJECT_NAME})
 set     (ProductName "Audio App")
 
 set (companyName "noizplay")
 set (companyURL "noizplay.com")
-###############################################################################
+
+unset  (USE_BOOST CACHE)
+option (USE_BOOST "Enable Boost libraries" OFF)
+#################################################
+
 
 # initialise
-set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Generate compile_commands.json")
 set_property (GLOBAL PROPERTY USE_FOLDERS YES)
 option (JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
 
@@ -55,8 +65,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(JUCE)
 
 # find Boost
-# find_package (Boost REQUIRED CONFIG)
-# message (STATUS "Boost version: ${Boost_VERSION}")
+if (USE_BOOST)
+    find_package (Boost REQUIRED CONFIG)
+    message (STATUS "Boost version: ${Boost_VERSION}")
+endif ()
 
 # define JUCE app
 juce_add_gui_app (${Target}
@@ -74,11 +86,8 @@ target_sources("${Target}"
     Source/app/App.cpp
 )
 
-target_link_libraries("${Target}"
-    PRIVATE
-
-    # Boost::boost
-
+# link libraries
+set (LINK_LIBRARIES
     juce::juce_audio_basics
     juce::juce_audio_utils
     juce::juce_graphics
@@ -87,6 +96,15 @@ target_link_libraries("${Target}"
     juce::juce_recommended_config_flags
     juce::juce_recommended_lto_flags
     juce::juce_recommended_warning_flags
+)
+
+if (USE_BOOST)
+    list (APPEND LINK_LIBRARIES Boost::boost)
+endif ()
+
+target_link_libraries("${Target}"
+    PRIVATE
+    ${LINK_LIBRARIES}
 )
 
 target_compile_definitions ("${Target}"
