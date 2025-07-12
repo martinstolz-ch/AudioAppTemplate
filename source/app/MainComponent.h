@@ -55,13 +55,19 @@ public:
 
     void resized() override {}
 
-    ///
+    /**
+     * Prepares the audio processor for play by setting up the necessary sample rate, block size,
+     * and performing any initialization required before audio playback or processing begins.
+     *
+     * @param sampleRate The sample rate at which the processor will operate, typically in Hz (e.g., 44100, 48000).
+     * @param samplesPerBlockExpected The number of samples per audio processing block. This value dictates the buffer size being processed at a time.
+     */
 
-    void prepareToPlay (int /* samplesPerBlockExpected */, double /* sampleRate */) override {
+    void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override {
         // ...
     }
 
-    void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override {
+    void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override {
         bufferToFill.clearActiveBufferRegion();
     }
 
