@@ -3,3 +3,6 @@
 
 # clion project
 /.idea/
+
+# cmake generated file
+/source/common/cmakeVar.h
