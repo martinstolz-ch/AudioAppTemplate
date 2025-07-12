@@ -64,10 +64,12 @@ public:
      */
 
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override {
+        ignoreUnused(samplesPerBlockExpected, sampleRate); // avoid warning
         // ...
     }
 
     void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override {
+        ignoreUnused(bufferToFill); // avoid warning
         bufferToFill.clearActiveBufferRegion();
     }
 
