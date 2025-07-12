@@ -6,14 +6,15 @@
 
 #include <JuceHeader.h>
 
-namespace aa::makeVar {
+namespace aa::cmakeVar {
 
-    static const String
-        buildYear {"@buildYear@"},
+static const String
+    buildYear {"@buildYear@"},
 
-        companyName {"@companyName@"},
-        companyURL {"@companyURL@"},
+    companyName {"@companyName@"},
+    companyURL {"@companyURL@"},
 
-        projectVersion {"@PROJECT_VERSION@"},
-        projectName {"@PROJECT_NAME@"};
+    projectVersion {"@PROJECT_VERSION@"},
+    projectName {"@PROJECT_NAME@"};
+
 }
