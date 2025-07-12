@@ -89,7 +89,8 @@ target_sources("${Target}"
 )
 
 # link libraries
-set (LINK_LIBRARIES
+target_link_libraries("${Target}"
+    PRIVATE
     juce::juce_audio_basics
     juce::juce_audio_utils
     juce::juce_graphics
@@ -101,13 +102,11 @@ set (LINK_LIBRARIES
 )
 
 if (USE_BOOST)
-    list (APPEND LINK_LIBRARIES Boost::boost)
+    target_link_libraries("${Target}"
+        PRIVATE
+        Boost::boost
+    )
 endif ()
-
-target_link_libraries("${Target}"
-    PRIVATE
-    ${LINK_LIBRARIES}
-)
 
 target_compile_definitions ("${Target}"
     PRIVATE
@@ -117,11 +116,8 @@ target_compile_definitions ("${Target}"
     JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${Target},JUCE_VERSION>"
 )
 
-target_include_directories(${Target}
-    PRIVATE
-    "${CMAKE_BINARY_DIR}/source/common")
-
 # create cmakeVars.h
+target_include_directories(${Target} PRIVATE "${CMAKE_BINARY_DIR}/source/common")
 get_target_property (COMPANY_WEBSITE ${Target} JUCE_COMPANY_WEBSITE)
 string (TIMESTAMP buildYear "%Y")
 configure_file (template/cmakeVar.h.tpl "source/common/cmakeVar.h" )
