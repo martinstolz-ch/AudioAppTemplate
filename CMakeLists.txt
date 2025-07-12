@@ -85,7 +85,7 @@ juce_generate_juce_header("${Target}")
 
 target_sources("${Target}"
     PUBLIC
-    Source/app/App.cpp
+    source/app/App.cpp
 )
 
 # link libraries
@@ -116,6 +116,10 @@ target_compile_definitions ("${Target}"
     JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${Target},JUCE_PROJECT_NAME>"
     JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${Target},JUCE_VERSION>"
 )
+
+target_include_directories(${Target}
+    PRIVATE
+    "${CMAKE_BINARY_DIR}/source/common")
 
 # create cmakeVars.h
 get_target_property (COMPANY_WEBSITE ${Target} JUCE_COMPANY_WEBSITE)
