@@ -1,7 +1,5 @@
 /**
- * created by Martin Stolz on 08.10.22
- *
- * (c) 2022 by noizplay.com
+ * (c) martin stolz @ noizplay
  */
 
 #include <JuceHeader.h>

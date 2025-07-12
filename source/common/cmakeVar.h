@@ -1,5 +1,5 @@
 /**
- * martin stolz - (c) noizplay.com
+ * (c) martin stolz @ noizplay
  */
 
 #pragma once
