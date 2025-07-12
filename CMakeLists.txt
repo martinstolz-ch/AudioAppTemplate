@@ -9,11 +9,13 @@ set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
 
+# vcpkg package manager required for Boost etc.
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     find_program(VCPKG_EXECUTABLE vcpkg)
     if(VCPKG_EXECUTABLE)
         get_filename_component(VCPKG_ROOT ${VCPKG_EXECUTABLE} DIRECTORY)
         set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE FILEPATH "")
+        message(STATUS "Using vcpkg: ${VCPKG_ROOT}")
     endif()
 endif()
 
@@ -27,7 +29,7 @@ set (companyName "noizplay")
 set (companyURL "noizplay.com")
 
 unset  (USE_BOOST CACHE)
-option (USE_BOOST "Enable Boost libraries" OFF)
+option (USE_BOOST "Enable Boost libraries" ON)
 #################################################
 
 
