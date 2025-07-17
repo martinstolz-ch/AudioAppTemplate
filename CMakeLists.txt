@@ -9,12 +9,17 @@ set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
 
-# vcpkg package manager required for Boost etc.
+# install vcpkg package manager in ~/Library (NOT /opt/vcpkg -> will result in permission confusion!):
 #
 # cd ~/Library
 # git clone https://github.com/microsoft/vcpkg.git ~/Library/vcpkg
 # ~/Library/vcpkg/bootstrap-vcpkg.sh
+#
+# add vcpkg folder to PATH in ~/.zshrc
+#
+# export PATH="$PATH:$HOME/Library/vcpkg"
 
+# setup the vcpkg toolchain for cmake
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     find_program(VCPKG_EXECUTABLE vcpkg)
     if(VCPKG_EXECUTABLE)
@@ -72,7 +77,7 @@ endif ()
 # FetchContent_MakeAvailable(JUCE)
 
 
-# find packs installed by vcpkg
+# install required packs (only once!):
 #
 # vcpkg install juce
 # vcpkg install boost-spirit boost-fusion boost-core
