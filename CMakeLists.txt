@@ -55,18 +55,19 @@ else ()
     message (FATAL_ERROR "No viable platform found")
 endif ()
 
+
 # fetch external repos
-include(FetchContent)
+# include(FetchContent)
+# FetchContent_Declare(
+#     JUCE
+#     GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+#     GIT_TAG 8.0.8
+# )
+# FetchContent_MakeAvailable(JUCE)
 
-message (STATUS "Fetch JUCE")
-FetchContent_Declare(
-    JUCE
-    GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-    GIT_TAG 8.0.8
-)
-FetchContent_MakeAvailable(JUCE)
 
-# find Boost
+# fetch external stuff installed by vcpkg
+find_package(juce REQUIRED CONFIG)
 if (USE_BOOST)
     find_package (Boost REQUIRED CONFIG)
     message (STATUS "Boost version: ${Boost_VERSION}")
