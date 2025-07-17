@@ -10,6 +10,11 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
 
 # vcpkg package manager required for Boost etc.
+#
+# cd ~/Library
+# git clone https://github.com/microsoft/vcpkg.git ~/Library/vcpkg
+# ~/Library/vcpkg/bootstrap-vcpkg.sh
+
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     find_program(VCPKG_EXECUTABLE vcpkg)
     if(VCPKG_EXECUTABLE)
@@ -67,7 +72,11 @@ endif ()
 # FetchContent_MakeAvailable(JUCE)
 
 
-# fetch external stuff installed by vcpkg
+# find packs installed by vcpkg
+#
+# vcpkg install juce
+# vcpkg install boost-spirit boost-fusion boost-core
+
 find_package(juce REQUIRED CONFIG)
 if (USE_BOOST)
     find_package (Boost REQUIRED CONFIG)
