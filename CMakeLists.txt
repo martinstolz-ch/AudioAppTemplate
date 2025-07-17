@@ -56,7 +56,8 @@ else ()
 endif ()
 
 
-# fetch external repos
+# fetch external repos directly from github
+
 # include(FetchContent)
 # FetchContent_Declare(
 #     JUCE
