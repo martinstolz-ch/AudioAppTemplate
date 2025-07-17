@@ -67,22 +67,19 @@ endif ()
 
 
 # fetch external repos directly from github
+include(FetchContent)
 
-# include(FetchContent)
-# FetchContent_Declare(
-#     JUCE
-#     GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-#     GIT_TAG 8.0.8
-# )
-# FetchContent_MakeAvailable(JUCE)
-
+message (STATUS "fetch juce")
+FetchContent_Declare(
+    JUCE
+    GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+    GIT_TAG 8.0.8
+)
+FetchContent_MakeAvailable(JUCE)
 
 # install required packs (only once!):
 #
-# vcpkg install juce
 # vcpkg install boost-spirit boost-fusion boost-core
-
-find_package(juce REQUIRED CONFIG)
 if (USE_BOOST)
     find_package (Boost REQUIRED CONFIG)
     message (STATUS "Boost version: ${Boost_VERSION}")
