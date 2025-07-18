@@ -9,7 +9,8 @@ set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
 
-# install vcpkg package manager in ~/Library (NOT /opt/vcpkg -> will result in permission confusion!):
+# install vcpkg package manager in "~/Library/vcpkg"
+# (NOT in /opt/vcpkg -> will result in permission confusion!):
 #
 # cd ~/Library
 # git clone https://github.com/microsoft/vcpkg.git ~/Library/vcpkg
