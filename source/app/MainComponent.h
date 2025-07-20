@@ -6,7 +6,8 @@
 
 #include <JuceHeader.h>
 
-#include "../common/cmakeVar.h"
+#include "cmakeVar.h"
+
 #include "../common/appConfig.h"
 
 namespace aa {

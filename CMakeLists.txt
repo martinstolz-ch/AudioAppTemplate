@@ -2,7 +2,7 @@
 # (c) martin stolz @ noizplay
 #################################################
 
-# preconditions
+# define preconditions
 cmake_minimum_required (VERSION 3.31.3)
 
 set (CMAKE_CXX_STANDARD 20)
@@ -12,13 +12,13 @@ set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
 # install vcpkg package manager in "~/Library/vcpkg"
 # (NOT in /opt/vcpkg -> will result in permission confusion!):
 #
-# cd ~/Library
-# git clone https://github.com/microsoft/vcpkg.git ~/Library/vcpkg
-# ~/Library/vcpkg/bootstrap-vcpkg.sh
+#     cd ~/Library
+#     git clone https://github.com/microsoft/vcpkg.git ~/Library/vcpkg
+#     ~/Library/vcpkg/bootstrap-vcpkg.sh
 #
-# add vcpkg folder to PATH in ~/.zshrc
+# add vcpkg folder to PATH in ~/.zshrc:
 #
-# export PATH="$PATH:$HOME/Library/vcpkg"
+#     export PATH="$PATH:$HOME/Library/vcpkg"
 
 # setup the vcpkg toolchain for cmake
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
@@ -78,9 +78,11 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(JUCE)
 
+
 # install required pack(s) for the 1st time:
 #
-# vcpkg install boost-spirit boost-fusion boost-core
+#     vcpkg install boost-spirit boost-fusion boost-core
+
 if (USE_BOOST)
     find_package (Boost REQUIRED CONFIG)
     message (STATUS "Boost version: ${Boost_VERSION}")
@@ -131,7 +133,16 @@ target_compile_definitions ("${Target}"
 )
 
 # create cmakeVars.h
-target_include_directories(${Target} PRIVATE "${CMAKE_BINARY_DIR}/source/common")
+message (STATUS "Create cmakeVar.h")
+
+# e.g. "/cmake-build-debug/source/generated"
+set(GENERATED_DIR "${CMAKE_BINARY_DIR}/source/generated")
+target_include_directories(
+    ${Target} PRIVATE ${GENERATED_DIR}
+)
+
+# add some values to replace
 get_target_property (COMPANY_WEBSITE ${Target} JUCE_COMPANY_WEBSITE)
 string (TIMESTAMP buildYear "%Y")
-configure_file (template/cmakeVar.h.tpl "source/common/cmakeVar.h" )
+
+configure_file (template/cmakeVar.h.tpl "${GENERATED_DIR}/cmakeVar.h" )
