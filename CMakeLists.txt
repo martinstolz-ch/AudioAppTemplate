@@ -29,11 +29,12 @@ set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
 # check vcpkg itself
 find_program(VCPKG_EXECUTABLE vcpkg)
 if(VCPKG_EXECUTABLE)
+
+    get_filename_component(VCPKG_ROOT ${VCPKG_EXECUTABLE} DIRECTORY)
     message(STATUS "Using vcpkg: ${VCPKG_ROOT}")
 
     # setup the vcpkg toolchain for cmake
-    if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-        get_filename_component(VCPKG_ROOT ${VCPKG_EXECUTABLE} DIRECTORY)
+    if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)    
         set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE FILEPATH "")
     endif()
 
