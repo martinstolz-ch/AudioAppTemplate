@@ -29,12 +29,12 @@ set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
 # check vcpkg itself
 find_program(VCPKG_EXECUTABLE vcpkg)
 if(VCPKG_EXECUTABLE)
+    message(STATUS "Using vcpkg: ${VCPKG_ROOT}")
 
     # setup the vcpkg toolchain for cmake
     if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
         get_filename_component(VCPKG_ROOT ${VCPKG_EXECUTABLE} DIRECTORY)
         set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE FILEPATH "")
-        message(STATUS "Using vcpkg: ${VCPKG_ROOT}")
     endif()
 
     # check and display package update status
@@ -62,8 +62,8 @@ set (companyURL "noizplay.com")
 
 unset  (USE_BOOST CACHE)
 unset  (USE_SENTRY CACHE)
-option (USE_BOOST "Enable Boost libraries" ON)
-option (USE_SENTRY "Enable sentry" ON)
+option (USE_BOOST "Enable Boost libraries" OFF)
+option (USE_SENTRY "Enable sentry" OFF)
 #################################################
 
 
