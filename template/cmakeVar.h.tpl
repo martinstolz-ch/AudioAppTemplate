@@ -8,7 +8,8 @@
 
 namespace aa::cmakeVar {
 
-static const String
+static constexpr std::string
+
     buildYear {"@buildYear@"},
 
     companyName {"@companyName@"},
