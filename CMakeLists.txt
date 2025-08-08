@@ -41,6 +41,8 @@ set (companyURL "noizplay.com")
 
 unset  (USE_BOOST CACHE)
 option (USE_BOOST "Enable Boost libraries" ON)
+unset  (USE_SENTRY CACHE)
+option (USE_SENTRY "Enable sentry" ON)
 #################################################
 
 
@@ -52,7 +54,7 @@ option (JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
 # we are Mac ?
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set (CMAKE_OSX_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimum OS X deployment version" FORCE)
-    set (CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE INTERNAL "")
+    set (CMAKE_OSX_ARCHITECTURES "arm64" CACHE INTERNAL "")
     set (MACOSX_BUNDLE TRUE) # create .app bundle for mac
     message (STATUS "Build for Mac")
 
@@ -83,10 +85,16 @@ FetchContent_MakeAvailable(JUCE)
 #
 #     vcpkg install boost-spirit boost-fusion boost-core
 #
+#     vcpkg install sentry-native:x64-osx
 
 if (USE_BOOST)
     find_package (Boost REQUIRED CONFIG)
     message (STATUS "Boost version: ${Boost_VERSION}")
+endif ()
+
+if (USE_SENTRY)
+    find_package (sentry REQUIRED CONFIG)
+    message (STATUS "sentry found")
 endif ()
 
 # define JUCE app
@@ -122,6 +130,13 @@ if (USE_BOOST)
     target_link_libraries("${Target}"
         PRIVATE
         Boost::boost
+    )
+endif ()
+
+if (USE_SENTRY)
+    target_link_libraries("${Target}"
+        PRIVATE
+        sentry::sentry
     )
 endif ()
 
