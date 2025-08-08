@@ -9,7 +9,7 @@ set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
 
-# install vcpkg package manager in "~/Library/vcpkg"
+# if not yet done: install vcpkg package manager in "~/Library/vcpkg"
 # (NOT in /opt/vcpkg -> will result in permission confusion!):
 #
 #     cd ~/Library
@@ -19,15 +19,36 @@ set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
 # add vcpkg folder to PATH in ~/.zshrc:
 #
 #     export PATH="$PATH:$HOME/Library/vcpkg"
+#
+# install possibly required pack(s) for the 1st time:
+#
+#     vcpkg install boost-spirit boost-fusion boost-core
+#     vcpkg install sentry-native:x64-osx
 
-# setup the vcpkg toolchain for cmake
-if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-    find_program(VCPKG_EXECUTABLE vcpkg)
-    if(VCPKG_EXECUTABLE)
+
+# check vcpkg itself
+find_program(VCPKG_EXECUTABLE vcpkg)
+if(VCPKG_EXECUTABLE)
+
+    # setup the vcpkg toolchain for cmake
+    if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
         get_filename_component(VCPKG_ROOT ${VCPKG_EXECUTABLE} DIRECTORY)
         set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE FILEPATH "")
         message(STATUS "Using vcpkg: ${VCPKG_ROOT}")
     endif()
+
+    # check and display package update status
+    execute_process(
+        COMMAND ${VCPKG_EXECUTABLE} upgrade --dry-run
+        OUTPUT_VARIABLE VCPKG_OUTPUT
+        ERROR_QUIET
+    )
+    if(VCPKG_OUTPUT)
+        message(STATUS "vcpkg: ${VCPKG_OUTPUT}")
+    endif()
+
+else()
+    MESSAGE (FATAL_ERROR "vcpkg not found!")
 endif()
 
 
@@ -40,8 +61,8 @@ set (companyName "noizplay")
 set (companyURL "noizplay.com")
 
 unset  (USE_BOOST CACHE)
-option (USE_BOOST "Enable Boost libraries" ON)
 unset  (USE_SENTRY CACHE)
+option (USE_BOOST "Enable Boost libraries" ON)
 option (USE_SENTRY "Enable sentry" ON)
 #################################################
 
@@ -80,19 +101,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(JUCE)
 
-
-# install required pack(s) for the 1st time:
-#
-#     vcpkg install boost-spirit boost-fusion boost-core
-#
-#     vcpkg install sentry-native:x64-osx
-
+# find external packages
 if (USE_BOOST)
+    message (STATUS "find Boost package...")
     find_package (Boost REQUIRED CONFIG)
     message (STATUS "Boost version: ${Boost_VERSION}")
 endif ()
 
 if (USE_SENTRY)
+    message (STATUS "find sentry package...")
     find_package (sentry REQUIRED CONFIG)
     message (STATUS "sentry found")
 endif ()
