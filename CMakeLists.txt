@@ -22,7 +22,7 @@ set (CMAKE_CXX_EXTENSIONS ON) # ON: use "-std=gnu++20" / OFF: use "-std=c++20"
 #
 # install possibly required pack(s) for the 1st time:
 #
-#     vcpkg install boost-spirit boost-fusion boost-core
+#     vcpkg install boost-spirit boost-fusion boost-core ...
 #     vcpkg install sentry-native:x64-osx
 
 
@@ -48,7 +48,7 @@ if(VCPKG_EXECUTABLE)
     endif()
 
 else()
-    MESSAGE (FATAL_ERROR "vcpkg not found!")
+    MESSAGE (FATAL_ERROR "vcpkg not found")
 endif()
 
 
